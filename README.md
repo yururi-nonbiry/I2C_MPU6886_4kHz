@@ -1,8 +1,9 @@
 # I2C MPU6886 4kHz IMU Library
-このライブラリはMPU6886のI2C接続時に4kHzでサンプリングするためのプログラムです。
+This library is a program for sampling at 4kHz when connecting MPU6886 to I2C.
 
 ## Support Devices
-M5ATOMで動作確認をしました。 おそらくI2Cの速度が400kHzに対応しているマイコンであれば動作すると思います。 I2Cのアドレスは環境に合うものに変更してください。
+I checked the operation with M5ATOM. Probably, if the microcomputer supports I2C speed of 400kHz, it will work. Change the I2C address to one that suits your environment.
 
 ## Usage
-ローパスは解除してあるので、ノイズに注意願います。 ※詳細はサンプルプログラムを参照してください。 examples/I2C_MPU6886_4kHz.ino
+The low-pass filter has been canceled, so be careful of noise. * Please refer to the sample program for details.
+examples/I2C_MPU6886_4kHz.ino
