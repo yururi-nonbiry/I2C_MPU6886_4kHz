@@ -107,11 +107,11 @@ int I2C_MPU6886_4kHz::begin(void)
   }
   delay(1);
 
-  // CONFIG(0x1a) ローパスフィルタ設定
+  // CONFIG(0x1a) Lowpass filter settings
   writeByte(0x1a, 0x07);
   delay(1);
 
-  // SMPLRT_DIV(0x19) 平均化に使用するサンプル数(1+設定値)
+  // SMPLRT_DIV(0x19) Number of samples used for averaging (1 + set value)
   writeByte(0x19, 0x00);
   delay(1);
 
@@ -119,7 +119,7 @@ int I2C_MPU6886_4kHz::begin(void)
   writeByte(0x38, 0x00);
   delay(1);
 
-  // ACCEL_CONFIG 2(0x1d) ローパスフィルターバイパス
+  // ACCEL_CONFIG 2(0x1d) Lowpass filter bypass setting
   writeByte(0x1d, 0x08);
   delay(1);
 
