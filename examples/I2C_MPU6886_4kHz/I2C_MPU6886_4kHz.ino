@@ -1,22 +1,22 @@
-// I2C_MPU6886_4kHzのサンプルプログラム
-// I2C 400kHzのサンプリング速度
-// 1軸読取 MAX 4KHz
-// 3軸同時読取 MAX 2875kHz
-// 6軸同時読取 MAX 1440kHz
+// I2C_MPU6886_4kHz sample program
+// Sampling speed at I2C 400kHz
+// 1-axis reading MAX 4KHz
+// 3-axis simultaneous reading MAX 2875kHz
+// 6-axis simultaneous reading MAX1440kHz
 
-// サンプル数
+// Sample quantity
 #define SAMPLE 2048
 
 #include "I2C_MPU6886_4kHz.h"
 
 I2C_MPU6886_4kHz imu(I2C_MPU6886_DEFAULT_ADDRESS, Wire1);
 
-float sample_value[SAMPLE];    //値格納用
-int16_t sample_binary[SAMPLE]; //値格納用
+float sample_value[SAMPLE];    //For value storage
+int16_t sample_binary[SAMPLE]; //For value storage
 
 void value_read()
 {
-  // 値格納用(float)
+  // For value storage(float)
   float ax;
   float ay;
   float az;
@@ -25,7 +25,7 @@ void value_read()
   float gz;
   float t;
 
-  // 1軸読取
+  // 1-axis reading
   imu.getAccel_x(&ax);
   imu.getAccel_y(&ay);
   imu.getAccel_z(&az);
@@ -36,7 +36,7 @@ void value_read()
 
   Serial.printf("%f,%f,%f,%f,%f,%f,%f\n", ax, ay, az, gx, gy, gz, t);
 
-  // 3軸読取
+  // 3-axis reading
   imu.getAccel(&ax, &ay, &az);
   imu.getGyro(&gx, &gy, &gz);
 
@@ -45,7 +45,7 @@ void value_read()
 
 void binary_read()
 {
-  // 値格納用(バイナリ)
+  // For value storage (binary)
   int16_t ax_binary;
   int16_t ay_binary;
   int16_t az_binary;
@@ -97,9 +97,9 @@ void binary_read()
 void sampling()
 {
 
-  unsigned long start_time = micros(); // スタート時間保存
+  unsigned long start_time = micros(); // Keep start time
 
-  // 数値用
+  // For numbers
   float ax;
   float ay;
   float az;
@@ -108,7 +108,7 @@ void sampling()
   float gz;
   float t;
 
-  //バイナリ用
+  // For binary
   int16_t ax_binary;
   int16_t ay_binary;
   int16_t az_binary;
@@ -120,7 +120,7 @@ void sampling()
   for (int i = 0; i < SAMPLE; i++)
   {
 
-    // 1軸数値
+    // 1-axis numerical value
     imu.getAccel_x(&ax);
     //imu.getAccel_y(&ay);
     //imu.getAccel_z(&az);
@@ -129,11 +129,11 @@ void sampling()
     //imu.getGyro_z(&gz);
     //imu.getTemp(&t);
 
-    // 3軸数値
+    // 3-axis numerical value
     //imu.getAccel(&ax, &ay, &az);
     //imu.getGyro(&gx, &gy, &gz);
 
-    // 1軸バイナリ
+    // 1 axis binary
     //imu.getAccel_x_binary(&ax_binary);
     //imu.getAccel_y_binary(&ay_binary);
     //imu.getAccel_z_binary(&az_binary);
@@ -142,24 +142,24 @@ void sampling()
     //imu.getGyro_z_binary(&gz_binary);
     //imu.getTemp_binary(&t_binary);
 
-    // 3軸バイナリ
+    // 3-axis binary
     //imu.getAccel_binary(&ax_binary, &ay_binary, &az_binary);
     //imu.getGyro_binary(&gx_binary, &gy_binary, &gz_binary);
 
-    // sample[]に値を入れたい場合はコメントアウトを外して変数を入れる
-    sample_value[i] = ax;
+    // If you want to display the value, uncomment it and put the variable
+    //sample_value[i] = ax;
     //sample_binary[i] = t_binary;
   }
-  unsigned long end_time = micros(); // 終了時間保存
+  unsigned long end_time = micros(); // Keep the end time
 
-  // サンプリング周期確認用
+  // For checking the sampling cycle
   Serial.print(F("Sampling frequency : "));
   Serial.println(1000000.0 / float(end_time - start_time) * SAMPLE);
 
-  //値を確認するときは下のコメントアウトを外す
+  // Uncomment below to see the value
   for (int i = 0; i < SAMPLE; i++)
   {
-    Serial.println(sample_value[i], 4);
+    //Serial.println(sample_value[i], 4);
     //Serial.println(sample_binary[i]);
   }
 }
@@ -170,26 +170,26 @@ void setup()
 
   delay(100);
 
-  Wire1.begin(25, 21);    // I2Cのピン設定
-  Wire1.setClock(400000); // I2Cの速度を400kHzにする
+  Wire1.begin(25, 21);    // I2C pin settings
+  Wire1.setClock(400000); // Set the I2C speed to 400kHz
 
-  // センサのレンジ設定(beginの前に行うこと)
-  // ACCEL_CONFIG (加速度)
+  // Sensor range setting (do before begin)
+  // ACCEL_CONFIG
   // 0:2g 1:4g 2:8g 3:16g [default 2:8g]
   imu.accel_config = 2;
-  // GYRO_CONFIG (ジャイロ)
+  // GYRO_CONFIG
   // 0:250dps 1:500dps 2:1000dps 3:2000dps [default 3:2000dps]
   imu.gyro_config = 3;
 
-  imu.begin(); // MPU6886の初期化
+  imu.begin(); // Initialization of MPU6886
 }
 
 void loop()
 {
-  //確認したい項目のコメントアウトを外してください
-  value_read(); // 値読み取り
-  //binary_read(); // バイナリ読取
-  //sampling(); // サンプリング速度確認
+  // Please uncomment the item you want to check
+  value_read(); // Value reading
+  //binary_read(); // Binary reading
+  //sampling(); // Sampling speed check
 
   delay(100);
 }
